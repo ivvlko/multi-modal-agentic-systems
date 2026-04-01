@@ -15,7 +15,9 @@ docker compose up --build
 
 Services are available on:
 
-- http://localhost:3000/ - UI, client ready product. You can ask obviously limited questions atm, some data was fed - you can explore it inside "/example_data".
+- http://localhost:3000/ - UI, client ready product. You can't ask questions atm, some data was prepared in "/example_data". You would need to relocate some resources, that's why is not in the building pipe. If you want to test it just run:
+
+```python3 -m seed```
 
 - http://localhost:3001/ - grafana tool for monitoring, dashboards
 

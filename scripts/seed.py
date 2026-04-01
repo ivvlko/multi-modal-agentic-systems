@@ -93,10 +93,7 @@ async def seed_images(pool: asyncpg.Pool, client: httpx.AsyncClient, images_file
         print(f"  {img['doc_id']} — {img['image_url'][:60]}...")
         try:
             embeddings = await embed_images(client, [img["image_url"]])
-        except httpx.HTTPStatusError as exc:
-            print(f"  ✗ skipped ({exc.response.status_code})")
-            continue
-        except httpx.HTTPError as exc:
+        except Exception as exc:
             print(f"  ✗ skipped ({exc})")
             continue
 
@@ -121,7 +118,7 @@ async def main() -> None:
     data_dir = Path(__file__).parent / "example_data"
 
     print("Checking embedder health...")
-    async with httpx.AsyncClient(base_url=EMBEDDER_URL, timeout=120.0) as client:
+    async with httpx.AsyncClient(base_url=EMBEDDER_URL, timeout=300.0) as client:
         try:
             resp = await client.get("/health")
             resp.raise_for_status()
@@ -136,9 +133,6 @@ async def main() -> None:
 
         print("Seeding text articles...")
         await seed_articles(pool, client, data_dir / "articles")
-
-        print("\nSeeding images...")
-        await seed_images(pool, client, data_dir / "images.json")
 
         await pool.close()
 
