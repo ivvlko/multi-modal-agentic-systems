@@ -23,6 +23,8 @@ class QueryIntent(BaseModel):
     modality: ModalityType
     filters: list[SearchFilter] = Field(default_factory=list)
     expanded_terms: list[str] = Field(default_factory=list)
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    fallback_to_text_only: bool = False
 
 
 class TextChunk(BaseModel):
@@ -63,3 +65,6 @@ class SynthesizerOutput(BaseModel):
     answer: str
     citations: list[Citation]
     grounding_passed: bool
+    unsupported_claims: list[str] = Field(default_factory=list)
+    token_usage: dict[str, int] = Field(default_factory=dict)
+    latency_ms: float = 0.0
