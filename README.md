@@ -9,6 +9,9 @@ An AI-powered search and question-answering system over a mixed-media content ar
 
 ## How to run
 
+Check `env.example`
+
+You will need `OPENAI_API_KEY`. Once you set you just:
 ```
 docker compose up --build
 ```
