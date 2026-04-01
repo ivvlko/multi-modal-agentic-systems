@@ -1,0 +1,83 @@
+{
+  "title": "WGSN Search",
+  "uid": "wgsn-search",
+  "schemaVersion": 38,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Search Requests / min",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [{
+        "datasource": "Prometheus",
+        "expr": "rate(wgsn_search_requests_total[1m]) * 60",
+        "legendFormat": "{{endpoint}} {{status}}"
+      }]
+    },
+    {
+      "id": 2,
+      "title": "P95 Latency (seconds)",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "targets": [{
+        "datasource": "Prometheus",
+        "expr": "histogram_quantile(0.95, rate(wgsn_search_latency_seconds_bucket[5m]))",
+        "legendFormat": "p95 {{endpoint}}"
+      }]
+    },
+    {
+      "id": 3,
+      "title": "Grounded vs Ungrounded",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "datasource": "Prometheus",
+          "expr": "rate(wgsn_synthesis_grounded_total[5m])",
+          "legendFormat": "grounded"
+        },
+        {
+          "datasource": "Prometheus",
+          "expr": "rate(wgsn_synthesis_ungrounded_total[5m])",
+          "legendFormat": "ungrounded"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Hallucination Rate",
+      "type": "stat",
+      "gridPos": { "x": 12, "y": 8, "w": 6, "h": 8 },
+      "targets": [{
+        "datasource": "Prometheus",
+        "expr": "rate(wgsn_synthesis_ungrounded_total[5m]) / (rate(wgsn_synthesis_grounded_total[5m]) + rate(wgsn_synthesis_ungrounded_total[5m]))",
+        "legendFormat": "hallucination rate"
+      }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "auto", "textMode": "auto", "colorMode": "background" },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "thresholds": { "steps": [{ "color": "green", "value": 0 }, { "color": "yellow", "value": 0.03 }, { "color": "red", "value": 0.05 }] } } }
+    },
+    {
+      "id": 5,
+      "title": "Retrieved Items (avg)",
+      "type": "timeseries",
+      "gridPos": { "x": 18, "y": 8, "w": 6, "h": 8 },
+      "targets": [{
+        "datasource": "Prometheus",
+        "expr": "rate(wgsn_retrieved_items_count_sum[5m]) / rate(wgsn_retrieved_items_count_count[5m])",
+        "legendFormat": "avg {{modality}}"
+      }]
+    },
+    {
+      "id": 6,
+      "title": "API Logs",
+      "type": "logs",
+      "gridPos": { "x": 0, "y": 16, "w": 24, "h": 10 },
+      "targets": [{
+        "datasource": "Loki",
+        "expr": "{service=\"api\"}",
+        "legendFormat": ""
+      }]
+    }
+  ]
+}

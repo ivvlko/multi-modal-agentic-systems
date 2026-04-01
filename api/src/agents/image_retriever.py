@@ -108,7 +108,7 @@ class ImageRetrieverAgent:
     async def _get_text_clip_embedding(self, query: str) -> list[float]:
         try:
             response = await self._embedder_client.post(
-                "/embed/image", json={"image_urls": [query]}
+                "/embed/query-clip", json={"texts": [query]}
             )
             response.raise_for_status()
         except httpx.HTTPError as exc:

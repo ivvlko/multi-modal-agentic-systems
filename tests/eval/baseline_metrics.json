@@ -1,0 +1,8 @@
+{
+  "recall_at_10_text": 0.80,
+  "recall_at_10_image": 0.70,
+  "mrr": 0.65,
+  "hallucination_rate": 0.05,
+  "citation_coverage": 0.80,
+  "e2e_latency_p95_ms": 3000.0
+}

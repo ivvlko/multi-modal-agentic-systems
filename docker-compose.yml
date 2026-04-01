@@ -28,13 +28,118 @@ services:
     networks:
       - wsgn-net
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8001/health || exit 1"]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8001/health')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 120s
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      POSTGRES_HOST: postgres
+      EMBEDDER_URL: http://embedder:8001
+    ports:
+      - "8000:8000"
+    networks:
+      - wsgn-net
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
       interval: 15s
       timeout: 5s
       retries: 3
     depends_on:
       postgres:
         condition: service_healthy
+      embedder:
+        condition: service_healthy
+
+  seed:
+    build:
+      context: .
+      dockerfile: scripts/Dockerfile
+    env_file: .env
+    environment:
+      POSTGRES_HOST: postgres
+      EMBEDDER_URL: http://embedder:8001
+    networks:
+      - wsgn-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+      embedder:
+        condition: service_healthy
+    restart: "no"
+
+  react:
+    build:
+      context: ./react
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - wsgn-net
+    depends_on:
+      api:
+        condition: service_healthy
+
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - wsgn-net
+    depends_on:
+      - api
+
+  loki:
+    image: grafana/loki:2.9.0
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./infra/loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    networks:
+      - wsgn-net
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./infra/promtail/promtail-config.yml:/etc/promtail/config.yml:ro
+    networks:
+      - wsgn-net
+    depends_on:
+      - loki
+    restart: on-failure
+    command: -config.file=/etc/promtail/config.yml
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - wsgn-net
+    depends_on:
+      - prometheus
+      - loki
 
 networks:
   wsgn-net:
@@ -42,3 +147,5 @@ networks:
 
 volumes:
   postgres_data:
+  loki_data:
+  grafana_data:

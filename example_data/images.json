@@ -1,0 +1,58 @@
+[
+  {
+    "doc_id": "img-runway-001",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800",
+    "caption": "Model walking the runway at a fashion week show in a structured white ensemble",
+    "metadata": { "category": "runway", "season": "ss2024" }
+  },
+  {
+    "doc_id": "img-runway-002",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800",
+    "caption": "Fashion week runway show with dramatic lighting and couture gowns",
+    "metadata": { "category": "runway", "season": "aw2024" }
+  },
+  {
+    "doc_id": "img-street-001",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800",
+    "caption": "Street style shot of woman in oversized blazer and wide-leg trousers in neutral tones",
+    "metadata": { "category": "street-style", "style": "quiet-luxury" }
+  },
+  {
+    "doc_id": "img-street-002",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800",
+    "caption": "Fashion shopping street style editorial with colourful bags and accessories",
+    "metadata": { "category": "street-style", "location": "city-centre" }
+  },
+  {
+    "doc_id": "img-material-001",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+    "caption": "Close-up of sustainable linen and natural fibre fabric texture for ethical fashion",
+    "metadata": { "category": "materials", "type": "sustainable" }
+  },
+  {
+    "doc_id": "img-tailoring-001",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800",
+    "caption": "Minimal retail interior with curated tailored garments on rail in neutral palette",
+    "metadata": { "category": "retail", "style": "minimalism" }
+  },
+  {
+    "doc_id": "img-colour-001",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800",
+    "caption": "Cobalt blue dress editorial fashion photography against clean background",
+    "metadata": { "category": "colour-trend", "colour": "cobalt-blue" }
+  },
+  {
+    "doc_id": "img-accessories-001",
+    "source": "unsplash",
+    "image_url": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800",
+    "caption": "Luxury leather handbag detail shot showcasing craftsmanship and material quality",
+    "metadata": { "category": "accessories", "type": "bag" }
+  }
+]
