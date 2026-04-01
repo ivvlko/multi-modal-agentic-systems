@@ -56,7 +56,7 @@ Other important port mappings:
 
 ---
 
-## System Overview
+## System Overview (Claude's generation starts here)
 
 ```
                         ┌─────────────────────────────────────────────────┐
