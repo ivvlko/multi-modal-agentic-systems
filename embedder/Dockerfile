@@ -6,6 +6,7 @@ RUN pip install --no-cache-dir \
     fastapi==0.111.0 \
     uvicorn[standard]==0.29.0 \
     openai==1.30.0 \
+    httpx==0.27.2 \
     sentence-transformers==3.0.0 \
     python-dotenv==1.0.1
 
