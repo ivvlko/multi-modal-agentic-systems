@@ -6,6 +6,31 @@
 An AI-powered search and question-answering system over a mixed-media content archive containing long-form text documents, visual assets, and associated metadata.
 
 ---
+
+## How to run
+
+```
+docker compose up --build
+```
+
+Services are available on:
+
+- http://localhost:3000/ - UI, client ready product. You can ask obviously limited questions atm, some data was fed - you can explore it inside "/example_data".
+
+- http://localhost:3001/ - grafana tool for monitoring, dashboards
+
+- http://localhost:9090/ - prometheus db itself that grafana is build on top of
+
+
+Other important port mappings:
+
+- 8000 - FastAPi
+- 8001 - Embedding Models service
+- 5432 - Postgres
+- 3100 - loki
+
+---
+
 ## Key decisions made - engineer's thought process
 
 - For simplicity and easy integration and least dependencies I am picking postgres + pgvector as the core of my memory
